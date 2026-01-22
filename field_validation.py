@@ -43,6 +43,6 @@ def update_patient_data(patient: Patient):
     print(patient.contact_details)
 
 
-patient_info={'name':'gaurav','email':'abc@hdfc.com', 'age':61,'weight':54.3,'married':True,'allergies':['wind','light','dust'],'contact_details':{'phone':"9876543210"}}
+patient_info={'name':'gaurav','email':'abc@hdfc.com', 'age':61,'weight':54.3,'married':True,'allergies':['wind','light','dust'],'contact_details':{'phone':"9876543210",'emergency':"987413"}}
 patient1=Patient(**patient_info)
 update_patient_data(patient1)
