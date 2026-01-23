@@ -37,7 +37,7 @@ class PatientUpdate(BaseModel):
     gender: Annotated[Optional[Literal['male','female']], Field(default=None)]
     height: Annotated[Optional[float],Field(default=None, gt=0)]
     weight: Annotated[Optional[float], Field(default=None, gt =0)]
-    
+
 
 app = FastAPI()
 
@@ -120,3 +120,20 @@ def create_patient(patient: Patient):
         status_code=201,
         content={"message": "patient created successfully"}
     )
+
+@app.put('/edit/{patient_id}')
+def update_patient(patient_id: str, patient_update: PatientUpdate):
+    data= load_data()
+    if patient_id not in data:
+        raise HTTPException(status_code=404, detail="patient not found")
+    existing_info=data[patient_id]
+    updataed_patient=patient_update.model_dump(exclude_unset=True)
+    for key, value in updataed_patient.items():
+        existing_info[key]=value
+    existing_info['id']=  patient_id  
+    patient_pydantic_obj=Patient(**existing_info) 
+    existing_info=patient_pydantic_obj.model_dump(exclude='id')   
+    data[patient_id]=existing_info   
+    save_data(data) 
+    return JSONResponse(status_code=200,content={'message':'patient update'})
+
